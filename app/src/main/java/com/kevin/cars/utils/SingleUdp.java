@@ -13,7 +13,7 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 
 /**
- * Created by Administrator
+ * Created by kevin
  * on 2016/7/5.
  */
 public class SingleUdp {
@@ -32,7 +32,7 @@ public class SingleUdp {
     private static byte[] udpReceiveBytes;
     private OnReceiveListen onReceiveListen;//接收监听
     private Thread udpReceiveThread;
-    private static SingleUdp UdpInstance;
+    private static SingleUdp UdpInstance;//单例
     private Myhandler myhandler;
 
     //私有构造器
@@ -82,7 +82,7 @@ public class SingleUdp {
         try {
             inetAddress = InetAddress.getByName(ipAddress);
 //            udpSocket = udpSocket == null ? new DatagramSocket() : udpSocket;
-            udpSocket = new DatagramSocket();
+            udpSocket = new DatagramSocket();//每次都new
         } catch (UnknownHostException | SocketException e) {
             e.printStackTrace();
         }
@@ -102,7 +102,6 @@ public class SingleUdp {
     //发送
     public void send(byte[] data) {
 
-        Log.e(TAG, "发送的数据=" + Util.bytes2HexString(data, data.length));
         if (udpSendPacket == null) {
             udpSendPacket = new DatagramPacket(data, data.length, inetAddress, udpRemotePort);
         } else {
@@ -116,12 +115,9 @@ public class SingleUdp {
                 try {
                     if (udpSocket != null) {
                         udpSocket.send(udpSendPacket);
-                        Log.e(TAG, "ip=" + udpSendPacket.getAddress().toString());
-                        Log.e(TAG, "udp发送成功！");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Log.e(TAG, "udp发送失败！" + e.toString());
                 }
             }
         }.start();
@@ -139,8 +135,6 @@ public class SingleUdp {
                         udpSocket.receive(udpReceivePacket);
                         int len = udpReceivePacket.getLength();
                         if (len > 0) {
-                            Log.e(TAG,"len="+len);
-                            Log.e(TAG,"revData="+Util.bytes2HexString(udpReceiveBytes, len));
                             if (onReceiveListen != null) {
                                 onReceiveListen.onReceiveData(udpReceiveBytes, len, null);
                                 myhandler.sendEmptyMessage(RECEIVED_DATA);
@@ -165,11 +159,14 @@ public class SingleUdp {
     }
 
 
-
+    /**
+     * Handler
+     */
     static class Myhandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == RECEIVED_DATA) {
+                //初始化
                 Arrays.fill(udpReceiveBytes, (byte) 0x00);
             }
         }

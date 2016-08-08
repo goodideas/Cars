@@ -19,10 +19,10 @@ import java.util.List;
 public class CarAdapter extends BaseAdapter {
 
 
-    private Context mContext;
-    private List<CarItem> mList;
-    private int selected = -1;
-    private boolean isSelect;
+    private Context mContext;//context
+    private List<CarItem> mList;//list
+    private int selected = -1;//选择的item
+    private boolean isSelect;//是否选择
 
     public CarAdapter(Context context,List<CarItem> list){
         mContext = context;

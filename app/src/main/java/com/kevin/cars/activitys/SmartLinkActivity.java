@@ -290,7 +290,6 @@ public class SmartLinkActivity extends AppCompatActivity {
      */
 
     private void btnStopDo() {
-        Log.e(TAG, "btnStopDo");
         btnStartClick = false;
         btnStartClick2 = false;
         btnStart.setText(BUTTON_STRING_START);//btnTurn == true;
@@ -347,7 +346,6 @@ public class SmartLinkActivity extends AppCompatActivity {
 
     private void btnStartDo() {
         btnStartClick2 = true;
-        Log.e(TAG, "btnStartDo");
         btnStartClick = true;
         btnStart.setText(BUTTON_STRING_STOP);
         btnStart.setBackgroundResource(R.drawable.smart_link_bg2);
@@ -358,7 +356,6 @@ public class SmartLinkActivity extends AppCompatActivity {
             }
         });
         currentWifi = getSSid();
-        Log.e(TAG, "currentWifi=" + currentWifi);
         step1 = false;
         step1go = true;
         step2 = false;

@@ -1,12 +1,9 @@
 package com.kevin.cars.utils;
 
-import android.content.Context;
 import android.util.Log;
 
-import java.io.UnsupportedEncodingException;
-
 /**
- * Created by Administrator
+ * Created by kevin
  * on 2016/1/12.
  */
 public class Util {
@@ -52,16 +49,6 @@ public class Util {
         return reData;
     }
 
-    //16进制字符串转中文字符
-    public static String hexString2Characters(String hexString) {
-        String mCharacters = null;
-        try {
-            mCharacters = new String(Util.HexString2Bytes(hexString), "utf-8").trim();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return mCharacters;
-    }
 
 
     /**
@@ -105,28 +92,6 @@ public class Util {
         }
         return false;
     }
-
-
-    public static String hexStringToAscii(String hex) {
-        int length = hex.length();
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < length / 2; i++) {
-            sb.append((char) Integer.parseInt(hex.substring(i * 2, i * 2 + 2), 16));
-        }
-        return sb.toString();
-
-    }
-
-    public static String asciiToHexString(String asciiString) {
-        StringBuilder builder = new StringBuilder();
-        char[] asciiChars = asciiString.toCharArray();
-        for (char anChar : asciiChars) {
-            builder.append(Integer.toHexString((int) anChar));
-        }
-
-        return builder.toString();
-    }
-
 
 }
 

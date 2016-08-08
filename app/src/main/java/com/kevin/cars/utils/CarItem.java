@@ -6,8 +6,8 @@ package com.kevin.cars.utils;
  */
 public class CarItem {
 
-    String mac;
-    String shortAddr;
+    String mac;//mac地址
+    String shortAddr;//短地址
 
     public CarItem(String mac,String shortAddr){
         this.mac = mac;

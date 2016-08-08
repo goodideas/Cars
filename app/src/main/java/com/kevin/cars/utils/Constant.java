@@ -13,7 +13,7 @@ public class Constant {
 
     public static final int REMOTE_PORT = 5678;//远程端口
 
-    public static final int SEARCH_WAIT_DIALOG_TIME = 8000;//搜索设备最大时间
+    public static final int SEARCH_WAIT_DIALOG_TIME = 8000;//搜索设备最大等待时间
 
     /**
      * FFAA  0000000000000000  0100  0100      00    00   FF55

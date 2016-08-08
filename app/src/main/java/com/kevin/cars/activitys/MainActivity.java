@@ -41,25 +41,25 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,OnReceiveListen{
 
     private static final String TAG = "MainActivity";
-    private ListView listCar;
-    private Button btnSmartLink;
-    private Button btnSearch;
-    private Button btn1;
-    private Button btn2;
-    private Button btn3;
-    private Button btn4;
-    private Button btn5;
-    private Button btn6;
-    private BroadcastUdp broadcastUdp;
-    private List<CarItem> cList = new ArrayList<>();
-    private SingleUdp singleUdp;
-    private SpHelper spHelper;
-    private CarAdapter carAdapter;
-    private int lastSelect = -1;
-    private int selected = -1;
-    private boolean isSelect = false;
-    private TextView tvShowInfo;
-    private long exitTime;
+    private ListView listCar;//小车列表
+    private Button btnSmartLink;//smartLink
+    private Button btnSearch;//搜索按钮
+    private Button btn1;//按钮1
+    private Button btn2;//按钮2
+    private Button btn3;//按钮3
+    private Button btn4;//按钮4
+    private Button btn5;//按钮5
+    private Button btn6;//按钮6
+    private BroadcastUdp broadcastUdp;//广播
+    private List<CarItem> cList = new ArrayList<>();//list
+    private SingleUdp singleUdp;//udp
+    private SpHelper spHelper;//sp
+    private CarAdapter carAdapter;//适配器
+    private int lastSelect = -1;//记录最后的选择
+    private int selected = -1;//选择item
+    private boolean isSelect = false;//是否选择
+    private TextView tvShowInfo;//显示信息
+    private long exitTime;//退出时间
 
 
     @Override
@@ -69,20 +69,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         finds();
         btnClicks();
+        //广播实例
         broadcastUdp = new BroadcastUdp();
+        //广播初始化
         broadcastUdp.init();
+        //udp单例
         singleUdp = SingleUdp.getUdpInstance();
+        //SharedPreferences
         spHelper = new SpHelper(this);
+        //设置滚动
         tvShowInfo.setMovementMethod(new ScrollingMovementMethod());
         listCar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                if (lastSelect == position) {
+                if (lastSelect == position) {//再次点击item
                     isSelect = !isSelect;
                     carAdapter.setSelected(position, isSelect);
                     carAdapter.notifyDataSetChanged();
-                } else {
+                } else {//点击其他item
                     isSelect = true;
                     carAdapter.setSelected(position, true);
                     carAdapter.notifyDataSetChanged();
@@ -94,6 +99,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    /**
+     * 按钮监听
+     */
     private void btnClicks() {
         btnSmartLink.setOnClickListener(this);
         btnSearch.setOnClickListener(this);
@@ -105,6 +113,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn6.setOnClickListener(this);
     }
 
+    /**
+     * 初始化
+     */
     private void finds() {
         listCar = (ListView)findViewById(R.id.listCar);
         btnSmartLink  = (Button)findViewById(R.id.btnSmartLink);
@@ -156,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //按钮事件
     private void btnsDo(int index) {
         if (selected == -1) {
             Toast.makeText(MainActivity.this, "没有选择",Toast.LENGTH_SHORT).show();
@@ -164,12 +176,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(cList!=null){
                     if(selected!=-1){
                         CarItem carItem = cList.get(selected);
-                        Log.e(TAG, "carItem=" + carItem.getMac());
+                        //设置IP
                         singleUdp.setUdpIp(spHelper.getSpCarIp());
+                        //设置端口
                         singleUdp.setUdpRemotePort(Constant.REMOTE_PORT);
                         singleUdp.start();
                         singleUdp.send(Util.HexString2Bytes(getBtnSendData(index,carItem.getMac(),carItem.getShortAddr())));
                         singleUdp.receiveUdp();
+                        //设置接收
                         singleUdp.setOnReceiveListen(this);
                     }
                 }
@@ -204,15 +218,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         isSelect = false;
         if(broadcastUdp!=null){
             if(cList!=null&&carAdapter!=null&&listCar!=null){
+                //清空数据
                 cList.clear();
                 carAdapter = new CarAdapter(MainActivity.this,cList);
                 listCar.setAdapter(carAdapter);
             }
             broadcastUdp.init();
             broadcastUdp.send(Util.HexString2Bytes(Constant.SEND_DATA_SEARCH.replace(" ","")));
+            //广播接收
             broadcastUdp.setReceiveListen(new BroadcastListen() {
                 @Override
                 public void onReceiveData(byte[] data, int len, String remoteIp) {
+                    //转换为字符串
                     String da = Util.bytes2HexString(data, len);
                     analysisData(da, remoteIp);
                     if (Util.checkData(da) &&
@@ -236,9 +253,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * 解析广播数据
+     * @param da 接收的数据
+     * @param remoteIp 远程IP即目标IP
+     */
     private void analysisData(String da, String remoteIp) {
         if (Util.checkData(da)){
-            Log.e(TAG, "analysisData da=" + da);
             String cmd = da.substring(Constant.DATA_CMD_START,Constant.DATA_CMD_END);
             if( Constant.CMD_SEARCH_RESPOND.equalsIgnoreCase(cmd)) {
                 if(spHelper!=null){
@@ -249,10 +270,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 String mac = da.substring(Constant.DATA_MAC_START,Constant.DATA_MAC_END);
                 String shortAddr = da.substring(Constant.DATA_CONTENT_START,Constant.DATA_CONTENT_START+4);
-                Log.e(TAG, "mac=" + mac + " shortAddr=" + shortAddr);
                 cList.add(new CarItem(mac, shortAddr));
                 carAdapter = new CarAdapter(MainActivity.this,cList);
-              runOnUiThread(new Runnable() {
+                runOnUiThread(new Runnable() {
                   @Override
                   public void run() {
                       listCar.setAdapter(carAdapter);
@@ -267,7 +287,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onReceiveData(byte[] data, int len, @Nullable String remoteIp) {
         String da = Util.bytes2HexString(data, len);
-        Log.e(TAG,"onReceiveData data="+da);
         if (Util.checkData(da)){
             String cmd = da.substring(Constant.DATA_CMD_START,Constant.DATA_CMD_END);
             if( Constant.CMD_SEND_RESPOND.equalsIgnoreCase(cmd)) {
@@ -295,6 +314,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        //显示通信信息
                         tvShowInfo.append(content + "\n");
                     }
                 });
@@ -324,9 +344,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onDestroy() {
         super.onDestroy();
         if(singleUdp!=null){
+            //关闭udp
             singleUdp.stop();
         }
         if(broadcastUdp!=null){
+            //关闭广播
             broadcastUdp.stop();
         }
     }

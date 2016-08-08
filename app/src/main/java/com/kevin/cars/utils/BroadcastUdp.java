@@ -70,7 +70,6 @@ public class BroadcastUdp {
                 public void run() {
                     try {
                         udpSocket.send(udpSendPacket);
-                        Log.e(TAG,"发送成功");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -79,7 +78,6 @@ public class BroadcastUdp {
 
         } catch (UnknownHostException e) {
             e.printStackTrace();
-            Log.e(TAG, "发送失败");
 
         }
     }
@@ -100,15 +98,12 @@ public class BroadcastUdp {
                         if (len > 0) {
                             if (broadcastListen != null) {
 
-                                Log.e(TAG, "ip=" + udpReceivePacket.getAddress().toString());
                                 broadcastListen.onReceiveData(receiveBytes, len, udpReceivePacket.getAddress().toString().substring(1));
                                 myHandler.sendEmptyMessage(HANDLER_MESSAGE);
                                 String data = Util.bytes2HexString(receiveBytes, len);
-                                Log.e(TAG,"ceshi datattttttttttttttttttttttt="+data);
                                 if (Util.checkData(data) &&
                                         Constant.CMD_SEARCH_FINISH_RESPOND.equalsIgnoreCase(
                                                 data.substring(Constant.DATA_CMD_START, Constant.DATA_CMD_END))) {
-                                    Log.e(TAG,"ceshi break");
                                     break;
                                 }
 
@@ -135,7 +130,6 @@ public class BroadcastUdp {
         }
         if (udpSocket != null) {
             udpSocket.close();
-            Log.e(TAG, "broadcastClose");
         }
     }
 
@@ -168,14 +162,3 @@ public class BroadcastUdp {
 
 
 }
-// FF AA
-// 90 BF 69 09 00 4B 12 00
-// 01 10 2A 00
-// AB 8A
-// 00 00 11 00 FF FC 00 00 00 00 00 00 00 00 00 00
-// FF FF FF FF FF FF FF FF FF FF
-// FF FF FF FF FF FF FF FF FF FF
-// FF FF FF FF
-// 00 FF 55
-
-// FF AA 90 BF 69 09 00 4B 12 00 01 10 2A 00 AB 8A 00 00 11 00 FF FC 00 00 00 00 00 00 00 00 00 00 FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF 00 FF 55
