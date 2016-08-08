@@ -39,22 +39,22 @@ public class Constant {
 
 
     public static String SEND_DATA_1(String mac,String shortAddr) {
-        return "FFAA " + mac + " 1100 0800 "+shortAddr+"11 00 FF FC 01 31 31 FF55";
+        return "FFAA " + mac + " 1100 0800 "+shortAddr+"11 00 FF FC 01 31 00 FF55";
     }
     public static String SEND_DATA_2(String mac,String shortAddr) {
-        return "FFAA " + mac + " 1100 0800 "+shortAddr+"11 00 FF FC 01 32 32 FF55";
+        return "FFAA " + mac + " 1100 0800 "+shortAddr+"11 00 FF FC 01 32 00 FF55";
     }
     public static String SEND_DATA_3(String mac,String shortAddr) {
-        return "FFAA " + mac + " 1100 0800 "+shortAddr+"11 00 FF FC 01 33 33 FF55";
+        return "FFAA " + mac + " 1100 0800 "+shortAddr+"11 00 FF FC 01 33 00 FF55";
     }
     public static String SEND_DATA_4(String mac,String shortAddr) {
-        return "FFAA " + mac + " 1100 0800 "+shortAddr+"11 00 FF FC 01 34 34 FF55";
+        return "FFAA " + mac + " 1100 0800 "+shortAddr+"11 00 FF FC 01 34 00 FF55";
     }
     public static String SEND_DATA_5(String mac,String shortAddr) {
-        return "FFAA " + mac + " 1100 0800 "+shortAddr+"11 00 FF FC 01 35 35 FF55";
+        return "FFAA " + mac + " 1100 0800 "+shortAddr+"11 00 FF FC 01 35 00 FF55";
     }
     public static String SEND_DATA_6(String mac,String shortAddr) {
-        return "FFAA " + mac + " 1100 0800 "+shortAddr+"11 00 FF FC 01 36 36 FF55";
+        return "FFAA " + mac + " 1100 0800 "+shortAddr+"11 00 FF FC 01 36 00 FF55";
     }
 
 
