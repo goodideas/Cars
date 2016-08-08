@@ -141,27 +141,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn1:
 
-                btnsDo(0);
+                btnsDo(1);
                 break;
             case R.id.btn2:
 
-                btnsDo(1);
+                btnsDo(2);
                 break;
             case R.id.btn3:
 
-                btnsDo(2);
+                btnsDo(3);
                 break;
             case R.id.btn4:
 
-                btnsDo(3);
+                btnsDo(4);
                 break;
             case R.id.btn5:
 
-                btnsDo(4);
+                btnsDo(5);
                 break;
             case R.id.btn6:
 
-                btnsDo(5);
+                btnsDo(6);
                 break;
 
         }
@@ -192,12 +192,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private String getBtnSendData(int index,String mac,String shortAddr){
-        if(index == 0){
-            return Constant.SEND_DATA_0(mac, shortAddr).replace(" ", "");
-        }else if(index == 1){
+        if(index == 1){
             return Constant.SEND_DATA_1(mac, shortAddr).replace(" ", "");
-        }
-        else if(index == 2){
+        }else if(index == 2){
             return Constant.SEND_DATA_2(mac, shortAddr).replace(" ", "");
         }
         else if(index == 3){
@@ -208,6 +205,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         else if(index == 5){
             return Constant.SEND_DATA_5(mac, shortAddr).replace(" ", "");
+        }
+        else if(index == 6){
+            return Constant.SEND_DATA_6(mac, shortAddr).replace(" ", "");
         }else{
             return "";
         }

@@ -53,8 +53,8 @@ public class Constant {
     public static String SEND_DATA_5(String mac,String shortAddr) {
         return "FFAA " + mac + " 1100 0800 "+shortAddr+"11 00 FF FC 01 35 35 FF55";
     }
-    public static String SEND_DATA_0(String mac,String shortAddr) {
-        return "FFAA " + mac + " 1100 0800 "+shortAddr+"11 00 FF FC 01 30 30 FF55";
+    public static String SEND_DATA_6(String mac,String shortAddr) {
+        return "FFAA " + mac + " 1100 0800 "+shortAddr+"11 00 FF FC 01 36 36 FF55";
     }
 
 
